@@ -13,9 +13,12 @@ public class Echo extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("echo")) {
+        if (action.equals("escrever")) {
             String message = args.getString(0);
-            // Log.d('Bla', '---------------------------------------------------------------------****************************************************** '+message);
+            Log.i('Echo', message);
+            Log.i('Echo', message);
+            Log.i('Echo', message);
+            Log.i('Echo', message);
             this.echo(message, callbackContext);
             return true;
         }
