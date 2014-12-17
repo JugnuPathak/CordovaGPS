@@ -7,6 +7,8 @@ import org.json.JSONException;
 
 import android.util.Log;
 
+import com.phonegap.helloworld.HelloWorld;
+
 public class Echo extends CordovaPlugin {
     private static final String TAG = "DebugLogger";
 
@@ -14,10 +16,10 @@ public class Echo extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("escrever")) {
 //            String message = args.getString(0);
-        	
-        	JSONArray obj = new JSONArray();
-        	obj.put(HelloWorld.LAT);
-        	obj.put(HelloWorld.LNG);
+            
+            JSONArray obj = new JSONArray();
+            obj.put(HelloWorld.LAT);
+            obj.put(HelloWorld.LNG);
             
             if (obj != null && obj.length() > 0) {
                 Log.d(TAG, obj.toString());
