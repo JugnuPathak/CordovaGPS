@@ -11,7 +11,7 @@
 
 @implementation Echo
 
-- (void)echo:(CDVInvokedUrlCommand*)command
+- (void)escrever:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
     NSString *echo = @"BLA"; //[command.arguments objectAtIndex:0];
@@ -22,6 +22,13 @@
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network connection" 
+	                                                message:@"You must be connected to the internet to use this app." 
+	                                               delegate:nil 
+	                                      cancelButtonTitle:@"OK"
+	                                      otherButtonTitles:nil];
+	[alert show];
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }

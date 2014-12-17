@@ -10,6 +10,6 @@
 
 @interface Echo : CDVPlugin
 
-- (void)echo:(CDVInvokedUrlCommand*)command;
+- (void)escrever:(CDVInvokedUrlCommand*)command;
 
 @end
