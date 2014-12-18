@@ -27,9 +27,7 @@
     <!-- ios -->
     <platform name="ios">
 
-        <!-- <js-module src="www/echo.js" name="Echo">
-            <clobbers target="echo" />
-        </js-module> -->
+        <framework src="src/ios/Frameworks/CoreLocation.framework" custom="true" />
 
         <config-file target="config.xml" parent="/*">
             <feature name="Echo">

@@ -28,7 +28,13 @@ Issues
 iOS: before run, you must add CoreLocation framework to the project (via Xcode > Linked frameworks and Libraries).
 
 
-Contact me: vitorvl@yahoo.com.br
+Contact 
+=======
+
+Vitor Venturin
+
+
+vitorvl@yahoo.com.br
 
 
 http://vitorventurin.com
