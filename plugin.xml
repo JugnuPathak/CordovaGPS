@@ -2,7 +2,7 @@
  
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
 		   id="com.vitorventurin.gps"
-	  version="0.1.0">
+	  version="0.1.1">
 	<name>GPS</name>
 	<description>Cordova GPS plugin - iOS CoreLocation LocationService / Android LocationService GPS</description>
 	<license>MIT</license>
