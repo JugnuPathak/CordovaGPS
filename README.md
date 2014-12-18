@@ -5,7 +5,7 @@ Cordova plugin for GPS Location using iOS CoreLocation services and Android GPS 
 Works without wi-fi and 3g. Only GPS hardware.
 
 
-Contains a phonegap project on the folder /src/example/TestForEcho
+Contains a phonegap project on the folder /src/example/TestForGPS
 
 
 gps.js
