@@ -17,8 +17,15 @@ Print GPS information on index.html > #container:
 ```javascript
 var c = document.getElementById("container");
 var newParagraph = document.createElement('p');
-newParagraph.innerHTML = '>> '+ resp; //response from iOS-Android (latitude,longitude)
+newParagraph.innerHTML = resp; //response from iOS-Android (latitude,longitude)
 c.appendChild(newParagraph);
+```
+
+index.html
+==========
+
+```html
+<div id="container"></div>
 ```
 
 Contact 
