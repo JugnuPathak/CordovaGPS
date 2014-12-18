@@ -21,13 +21,6 @@ newParagraph.innerHTML = '>> '+ resp; //response from iOS-Android (latitude,long
 c.appendChild(newParagraph);
 ```
 
-
-Issues
-======
-
-iOS: before run, you must add CoreLocation framework to the project (via Xcode > Linked frameworks and Libraries).
-
-
 Contact 
 =======
 
