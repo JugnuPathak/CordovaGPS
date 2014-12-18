@@ -33,6 +33,13 @@
 	<platform name="ios">
 
 		<framework src="src/ios/Frameworks/CoreLocation.framework" custom="true" />
+		
+		<config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+            <string></string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+            <string></string>
+        </config-file>
 
 		<config-file target="config.xml" parent="/*">
 			<feature name="GPS">
