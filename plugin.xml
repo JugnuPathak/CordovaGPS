@@ -4,9 +4,9 @@
            id="com.vitorventurin.echo"
       version="0.1.0">
     <name>Echo</name>
-    <description>Sample PhoneGap Echo Plugin</description>
+    <description>Cordova GPS plugin - iOS CoreLocation LocationService / Android LocationService GPS</description>
     <license>MIT</license>
-    <keywords>phonegap,echo</keywords>
+    <keywords>phonegap,echo,gps,corelocation,location,geolocation,locationservice,service</keywords>
  
  
     <js-module src="www/echo.js" name="Echo">
