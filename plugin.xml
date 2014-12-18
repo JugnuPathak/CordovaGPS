@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-           id="com.vitorventurin.echo"
+           id="com.vitorventurin.gps"
       version="0.1.0">
-    <name>Echo</name>
+    <name>GPS</name>
     <description>Cordova GPS plugin - iOS CoreLocation LocationService / Android LocationService GPS</description>
     <license>MIT</license>
-    <keywords>phonegap,echo,gps,corelocation,location,geolocation,locationservice,service</keywords>
+    <keywords>phonegap,GPS,corelocation,location,geolocation,locationservice,service</keywords>
  
  
-    <js-module src="www/echo.js" name="Echo">
-        <clobbers target="window.echo" />
+    <js-module src="www/gps.js" name="GPS">
+        <clobbers target="window.gps" />
     </js-module>
  
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="Echo">
-                <param name="android-package" value="com.vitorventurin.echo.Echo"/>
+            <feature name="GPS">
+                <param name="android-package" value="com.vitorventurin.gps.GPS"/>
             </feature>
         </config-file>
  
-        <source-file src="src/android/Echo.java" target-dir="src/com/vitorventurin/echo" />      
+        <source-file src="src/android/GPS.java" target-dir="src/com/vitorventurin/gps" />      
      </platform>     
 
     <!-- ios -->
@@ -30,12 +30,12 @@
         <framework src="src/ios/Frameworks/CoreLocation.framework" custom="true" />
 
         <config-file target="config.xml" parent="/*">
-            <feature name="Echo">
-                <param name="ios-package" value="Echo" />
+            <feature name="GPS">
+                <param name="ios-package" value="GPS" />
             </feature>
         </config-file>
 
-        <header-file src="src/ios/Echo.h" />
-        <source-file src="src/ios/Echo.m" />
+        <header-file src="src/ios/GPS.h" />
+        <source-file src="src/ios/GPS.m" />
     </platform>
 </plugin>
