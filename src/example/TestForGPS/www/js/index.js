@@ -38,10 +38,10 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         setInterval(function () {
-            app.echoInit();            
+            app.gpsInit();            
         }, 3000);        
     },
-    echoInit: function() {
-        echo.echoNow();
+    gpsInit: function() {
+        gps.echoGPS();
     }
 };

@@ -8,7 +8,7 @@ Works without wi-fi and 3g. Only GPS hardware.
 Contains a phonegap project on the folder /src/example/TestForEcho
 
 
-echo.js
+gps.js
 =======
 
 Print GPS information on index.html > #container:
