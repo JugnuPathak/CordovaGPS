@@ -1,4 +1,4 @@
-package com.vitorventurin.echo;
+package com.vitorventurin.gps;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
