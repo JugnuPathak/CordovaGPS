@@ -11,7 +11,14 @@ echo.js
 
 Print GPS information on index.html > #container:
 
-var c = document.getElementById("container")
+var c = document.getElementById("container");
 var newParagraph = document.createElement('p');
 newParagraph.innerHTML = '>> '+ resp; //response from iOS-Android (latitude,longitude)
 c.appendChild(newParagraph);
+
+Issues
+======
+
+Contact me: vitorvl@yahoo.com.br
+http://vitorventurin.com
+VVLTDA 2014
