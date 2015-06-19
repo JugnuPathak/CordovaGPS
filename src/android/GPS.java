@@ -48,16 +48,13 @@ public class GPS extends CordovaPlugin implements LocationListener {
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        Toast.makeText(this.webView.getContext(), "Gps turned on ", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        Toast.makeText(this.webView.getContext(), "Gps turned off ", Toast.LENGTH_LONG).show(); 
     }
 }
