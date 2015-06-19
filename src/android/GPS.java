@@ -16,6 +16,8 @@ public class GPS extends CordovaPlugin implements LocationListener {
     private LocationManager locationManager;
     private double lat;
     private double lng;
+    private boolean isGPSEnabled = false;
+    private boolean isNetworkEnabled = false;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -28,6 +30,23 @@ public class GPS extends CordovaPlugin implements LocationListener {
             JSONArray obj = new JSONArray();
             obj.put(lat);
             obj.put(lng);
+            
+            if (obj != null && obj.length() > 0) {
+                callbackContext.success(obj);
+            } else {
+                callbackContext.error("Expected one non-empty string argument.");
+            }
+            
+            return true;
+        }
+        if (action.equals("locationservice")) {
+            locationManager = (LocationManager) this.webView.getContext().getSystemService(Context.LOCATION_SERVICE);
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            
+            JSONArray obj = new JSONArray();
+            obj.put(isGPSEnabled);
+            obj.put(isNetworkEnabled);
             
             if (obj != null && obj.length() > 0) {
                 callbackContext.success(obj);
