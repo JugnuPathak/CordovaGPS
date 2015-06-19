@@ -16,6 +16,7 @@ public class GPS extends CordovaPlugin implements LocationListener {
     private LocationManager locationManager;
     private double lat;
     private double lng;
+    private boolean gps = false;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -28,6 +29,7 @@ public class GPS extends CordovaPlugin implements LocationListener {
             JSONArray obj = new JSONArray();
             obj.put(lat);
             obj.put(lng);
+            obj.put(gps);
             
             if (obj != null && obj.length() > 0) {
                 callbackContext.success(obj);
@@ -52,9 +54,11 @@ public class GPS extends CordovaPlugin implements LocationListener {
 
     @Override
     public void onProviderEnabled(String provider) {
+        this.gps = true;
     }
 
     @Override
     public void onProviderDisabled(String provider) {
+        this.gps = false;
     }
 }
