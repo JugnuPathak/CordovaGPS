@@ -37,15 +37,11 @@ static double lng;
 - (void)locationservice:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
-    
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    
     NSNumber *isGPSEnabled;
     NSNumber *isNetworkEnabled;
     
     if([CLLocationManager locationServicesEnabled]){
-      if (status == kCLAuthorizationStatusDenied) {
+      if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
         isGPSEnabled = [NSNumber numberWithBool:NO];
         isNetworkEnabled = [NSNumber numberWithBool:NO];
       }
