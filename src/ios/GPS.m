@@ -90,8 +90,6 @@ static double lng;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oi" message:[NSString stringWithFormat:@"%@",error] delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:nil, nil];
-    [alert show];
 }
 
 @end
