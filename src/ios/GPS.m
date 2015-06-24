@@ -23,14 +23,7 @@ static double lng;
     
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    if(IS_OS_8_OR_LATER) {
-        NSLog(@"IOS 8");
-        if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-            [locationManager requestAlwaysAuthorization];
-        }
-    }
-    
+ 
     [locationManager startUpdatingLocation];
     
     NSString *latString = [NSString stringWithFormat:@"%.6f", lat];
@@ -41,38 +34,35 @@ static double lng;
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-#pragma mark - CLLocationManagerDelegate
-
-- (void)requestAlwaysAuthorization
+- (void)locationservice:(CDVInvokedUrlCommand*)command
 {
-    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    CDVPluginResult* pluginResult = nil;
     
-    // If the status is denied or only granted for when in use, display an alert
-    if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusDenied) {
-        NSString *title;
-        title = (status == kCLAuthorizationStatusDenied) ? @"Location services are off" : @"Background location is not enabled";
-        NSString *message = @"To use background location you must turn on 'Always' in the Location Services Settings";
-        
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:message
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:@"Settings", nil];
-        [alertView show];
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    
+    NSNumber *isGPSEnabled;
+    NSNumber *isNetworkEnabled;
+    
+    if([CLLocationManager locationServicesEnabled]){
+      if (status == kCLAuthorizationStatusDenied) {
+        isGPSEnabled = [NSNumber numberWithBool:NO];
+        isNetworkEnabled = [NSNumber numberWithBool:NO];
+      }
+      else{
+        isGPSEnabled = [NSNumber numberWithBool:YES];
+        isNetworkEnabled = [NSNumber numberWithBool:YES];
+      }
     }
-    // The user has not enabled any location services. Request background authorization.
-    else if (status == kCLAuthorizationStatusNotDetermined) {
-        [locationManager requestAlwaysAuthorization];
+    else{
+        isGPSEnabled = [NSNumber numberWithBool:NO];
+        isNetworkEnabled = [NSNumber numberWithBool:NO];
     }
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        // Send the user to the Settings for this app
-        NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-        [[UIApplication sharedApplication] openURL:settingsURL];
-    }
+    
+    NSArray *vetor = [[NSArray alloc] initWithObjects:isGPSEnabled,isNetworkEnabled,nil];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    
 }
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
