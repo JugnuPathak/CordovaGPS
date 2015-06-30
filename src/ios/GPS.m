@@ -24,6 +24,12 @@ static double lng;
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
  
+    if(IS_OS_8_OR_LATER) {
+        if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [locationManager requestAlwaysAuthorization];
+        }
+    }
+    
     [locationManager startUpdatingLocation];
     
     NSString *latString = [NSString stringWithFormat:@"%.6f", lat];
@@ -39,6 +45,7 @@ static double lng;
     CDVPluginResult* pluginResult = nil;
     NSNumber *isGPSEnabled;
     NSNumber *isNetworkEnabled;
+    NSNumber *isUndetermind;
     
     if([CLLocationManager locationServicesEnabled]){
       if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
@@ -55,23 +62,54 @@ static double lng;
         isNetworkEnabled = [NSNumber numberWithBool:NO];
     }
     
-    NSArray *vetor = [[NSArray alloc] initWithObjects:isGPSEnabled,isNetworkEnabled,nil];
+    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined){
+        isUndetermind = [NSNumber numberWithBool:YES];
+    }
+    else{
+        isUndetermind = = [NSNumber numberWithBool:NO];
+    }
+    
+    NSArray *vetor = [[NSArray alloc] initWithObjects:isGPSEnabled,isNetworkEnabled,isUndetermind,nil];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     
 }
 
+- (void)requestAlwaysAuthorization
+{
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if (status == kCLAuthorizationStatusDenied) {
+        NSString *title =  @"Location service is off";
+        NSString *message = @"To use location you must turn on either 'Always' or 'While Using the App' in the Location Services Settings";
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                            message:message
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"Settings", nil];
+        [alertView show];
+    }
+    else if (status == kCLAuthorizationStatusNotDetermined) {
+        [locationManager requestAlwaysAuthorization];
+    }
+}
+
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     CLLocation *currentLocation = [locations lastObject];
-    
     if (currentLocation != nil) {
         NSDate* eventDate = currentLocation.timestamp;
         NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
         if (abs(howRecent) < 15.0) {
-            // If the event is recent, do something with it.
             lat = currentLocation.coordinate.latitude;
             lng = currentLocation.coordinate.longitude;
         }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        [[UIApplication sharedApplication] openURL:settingsURL];
     }
 }
 
