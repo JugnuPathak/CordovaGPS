@@ -16,11 +16,9 @@ static double lng;
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    if(IS_OS_8_OR_LATER) {
-        NSLog(@"IOS 8");
-        if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-            [locationManager requestAlwaysAuthorization];
-        }
+    
+    if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+        [locationManager requestAlwaysAuthorization];
     }
     
     [locationManager startUpdatingLocation];
@@ -39,8 +37,12 @@ static double lng;
     CDVPluginResult* pluginResult = nil;
     NSNumber *isGPSEnabled;
     NSNumber *isNetworkEnabled;
-    NSNumber *isUndetermind;
-    NSNumber *isRistricted;
+    
+    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined){
+        if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [locationManager requestAlwaysAuthorization];
+        }
+    }
     
     if([CLLocationManager locationServicesEnabled]){
       if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
@@ -57,20 +59,7 @@ static double lng;
         isNetworkEnabled = [NSNumber numberWithBool:NO];
     }
     
-     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined){
-        isUndetermind = [NSNumber numberWithBool:YES];
-      }
-      else{
-        isUndetermind = [NSNumber numberWithBool:NO];
-     }
-     
-      if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted){
-        isRistricted = [NSNumber numberWithBool:YES];
-      }
-      else{
-        isRistricted = [NSNumber numberWithBool:NO];
-     }
-    NSArray *vetor = [[NSArray alloc] initWithObjects:isGPSEnabled,isNetworkEnabled,isUndetermind,isRistricted,nil];
+    NSArray *vetor = [[NSArray alloc] initWithObjects:isGPSEnabled,isNetworkEnabled,nil];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -80,8 +69,7 @@ static double lng;
 - (void)requestAlwaysAuthorization
 {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
- 
-    if (status == kCLAuthorizationStatusDenied) {
+    if (status == kCLAuthorizationStatusDenied && IS_OS_8_OR_LATER) {
         NSString *title =  @"Location service is off" ;
         NSString *message = @"To use location service you must turn on either 'Always' or 'When Using the APP' in the Location Services Settings";
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
@@ -121,7 +109,7 @@ static double lng;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-     [locationManager stopUpdatingLocation];
+     [manager stopUpdatingLocation];
 }
 
 @end
