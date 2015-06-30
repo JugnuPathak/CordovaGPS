@@ -16,11 +16,13 @@ static double lng;
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    
-    if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-        [locationManager requestAlwaysAuthorization];
+    if(IS_OS_8_OR_LATER){
+        if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [locationManager requestAlwaysAuthorization];
+        }
     }
     
+    [locationManager stopUpdatingLocation];
     [locationManager startUpdatingLocation];
     
     NSString *latString = [NSString stringWithFormat:@"%.6f", lat];
@@ -37,12 +39,6 @@ static double lng;
     CDVPluginResult* pluginResult = nil;
     NSNumber *isGPSEnabled;
     NSNumber *isNetworkEnabled;
-    
-    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined){
-        if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-            [locationManager requestAlwaysAuthorization];
-        }
-    }
     
     if([CLLocationManager locationServicesEnabled]){
       if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
@@ -69,7 +65,7 @@ static double lng;
 - (void)requestAlwaysAuthorization
 {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-    if (status == kCLAuthorizationStatusDenied && IS_OS_8_OR_LATER) {
+    if (status == kCLAuthorizationStatusDenied) {
         NSString *title =  @"Location service is off" ;
         NSString *message = @"To use location service you must turn on either 'Always' or 'When Using the APP' in the Location Services Settings";
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
@@ -109,7 +105,6 @@ static double lng;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-     [manager stopUpdatingLocation];
 }
 
 @end
