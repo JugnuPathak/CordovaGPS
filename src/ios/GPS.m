@@ -33,6 +33,33 @@ static double lng;
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+
+- (void)locationservice:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* pluginResult = nil;
+    NSNumber *isGPSEnabled;
+    NSNumber *isNetworkEnabled;
+    
+    if([CLLocationManager locationServicesEnabled]){
+      if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
+        isGPSEnabled = [NSNumber numberWithBool:NO];
+        isNetworkEnabled = [NSNumber numberWithBool:NO];
+      }
+      else{
+        isGPSEnabled = [NSNumber numberWithBool:YES];
+        isNetworkEnabled = [NSNumber numberWithBool:YES];
+     }
+    }
+    else{
+        isGPSEnabled = [NSNumber numberWithBool:NO];
+        isNetworkEnabled = [NSNumber numberWithBool:NO];
+    }
+    
+    NSArray *vetor = [[NSArray alloc] initWithObjects:isGPSEnabled,isNetworkEnabled,nil];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 #pragma mark - CLLocationManagerDelegate
 
 - (void)requestAlwaysAuthorization
