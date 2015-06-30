@@ -39,6 +39,8 @@ static double lng;
     CDVPluginResult* pluginResult = nil;
     NSNumber *isGPSEnabled;
     NSNumber *isNetworkEnabled;
+    NSNumber *isUndetermind;
+    NSNumber *isRistricted;
     
     if([CLLocationManager locationServicesEnabled]){
       if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
@@ -55,7 +57,20 @@ static double lng;
         isNetworkEnabled = [NSNumber numberWithBool:NO];
     }
     
-    NSArray *vetor = [[NSArray alloc] initWithObjects:isGPSEnabled,isNetworkEnabled,nil];
+     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined){
+        isUndetermind = [NSNumber numberWithBool:YES];
+      }
+      else{
+        isUndetermind = [NSNumber numberWithBool:NO];
+     }
+     
+      if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted){
+        isRistricted = [NSNumber numberWithBool:YES];
+      }
+      else{
+        isRistricted = [NSNumber numberWithBool:NO];
+     }
+    NSArray *vetor = [[NSArray alloc] initWithObjects:isGPSEnabled,isNetworkEnabled,isUndetermind,isRistricted,nil];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -106,6 +121,7 @@ static double lng;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+     [locationManager stopUpdatingLocation];
 }
 
 @end
