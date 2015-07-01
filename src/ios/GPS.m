@@ -14,22 +14,32 @@ static double lng;
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    if(IS_OS_8_OR_LATER){
-        if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-            [locationManager requestAlwaysAuthorization];
-        }
-    }
+    if([CLLocationManager locationServicesEnabled]){
+		if(IS_OS_8_OR_LATER){
+			if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+				[locationManager requestAlwaysAuthorization];
+			}
+		}
+		
+		[locationManager stopUpdatingLocation];
+		[locationManager startUpdatingLocation];
     
-    [locationManager startUpdatingLocation];
+		NSString *latString = [NSString stringWithFormat:@"%.6f", lat];
+		NSString *lngString = [NSString stringWithFormat:@"%.6f", lng];
     
-    NSString *latString = [NSString stringWithFormat:@"%.6f", lat];
-    NSString *lngString = [NSString stringWithFormat:@"%.6f", lng];
-    
-    NSArray *vetor = [[NSArray alloc] initWithObjects:latString,lngString,nil];
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		NSArray *vetor = [[NSArray alloc] initWithObjects:latString,lngString,nil];
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
+	    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+	else{
+		NSString *latString = [NSString stringWithFormat:@"%.6f", 0.0];
+		NSString *lngString = [NSString stringWithFormat:@"%.6f", 0.0];
+		
+		NSArray *vetor = [[NSArray alloc] initWithObjects:latString,lngString,nil];
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
+	    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
 }
-
 
 - (void)locationservice:(CDVInvokedUrlCommand*)command
 {
@@ -89,12 +99,10 @@ static double lng;
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     CLLocation *currentLocation = [locations lastObject];
-    
     if (currentLocation != nil) {
         NSDate* eventDate = currentLocation.timestamp;
         NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
         if (abs(howRecent) < 15.0) {
-            // If the event is recent, do something with it.
             lat = currentLocation.coordinate.latitude;
             lng = currentLocation.coordinate.longitude;
         }
@@ -104,7 +112,6 @@ static double lng;
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     lat = 0.0;
     lng = 0.0;
-    [locationManager stopUpdatingLocation];
 }
 
 @end
