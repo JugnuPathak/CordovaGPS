@@ -25,7 +25,8 @@ static double lng;
     
     NSString *latString = [NSString stringWithFormat:@"%.6f", lat];
     NSString *lngString = [NSString stringWithFormat:@"%.6f", lng];
-    
+    lat = 0.0;
+    lng = 0.0;
     NSArray *vetor = [[NSArray alloc] initWithObjects:latString,lngString,nil];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -100,6 +101,8 @@ static double lng;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    lat = 0.0;
+    lng = 0.0;
 }
 
 @end
