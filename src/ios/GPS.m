@@ -10,9 +10,7 @@ static double lng;
 - (void)escrever:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
-    
     locationManager = [[CLLocationManager alloc] init];
-    
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
@@ -22,7 +20,6 @@ static double lng;
         }
     }
     
-    [locationManager stopUpdatingLocation];
     [locationManager startUpdatingLocation];
     
     NSString *latString = [NSString stringWithFormat:@"%.6f", lat];
@@ -105,6 +102,9 @@ static double lng;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    lat = 0.0;
+    lng = 0.0;
+    [locationManager stopUpdatingLocation];
 }
 
 @end
