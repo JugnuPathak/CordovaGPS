@@ -14,31 +14,21 @@ static double lng;
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    if([CLLocationManager locationServicesEnabled]){
-		if(IS_OS_8_OR_LATER){
-			if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-				[locationManager requestAlwaysAuthorization];
-			}
-		}
-		
-		[locationManager stopUpdatingLocation];
-		[locationManager startUpdatingLocation];
+    if(IS_OS_8_OR_LATER) {
+        NSLog(@"IOS 8");
+        if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [locationManager requestAlwaysAuthorization];
+        }
+    }
     
-		NSString *latString = [NSString stringWithFormat:@"%.6f", lat];
-		NSString *lngString = [NSString stringWithFormat:@"%.6f", lng];
+    [locationManager startUpdatingLocation];
     
-		NSArray *vetor = [[NSArray alloc] initWithObjects:latString,lngString,nil];
-		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
-	    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-	}
-	else{
-		NSString *latString = [NSString stringWithFormat:@"%.6f", 0.0];
-		NSString *lngString = [NSString stringWithFormat:@"%.6f", 0.0];
-		
-		NSArray *vetor = [[NSArray alloc] initWithObjects:latString,lngString,nil];
-		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
-	    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-	}
+    NSString *latString = [NSString stringWithFormat:@"%.6f", lat];
+    NSString *lngString = [NSString stringWithFormat:@"%.6f", lng];
+    
+    NSArray *vetor = [[NSArray alloc] initWithObjects:latString,lngString,nil];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:vetor];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)locationservice:(CDVInvokedUrlCommand*)command
@@ -110,8 +100,6 @@ static double lng;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    lat = 0.0;
-    lng = 0.0;
 }
 
 @end
