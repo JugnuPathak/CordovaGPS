@@ -12,7 +12,7 @@ static double lng;
     CDVPluginResult* pluginResult = nil;
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
     
     if(IS_OS_8_OR_LATER) {
         NSLog(@"IOS 8");
@@ -93,7 +93,7 @@ static double lng;
     if (currentLocation != nil) {
         NSDate* eventDate = currentLocation.timestamp;
         NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-        if (abs(howRecent) < 15.0) {
+        if (abs(howRecent) < 5.0 && (currentLocation.horizontalAccuracy >= 0 && currentLocation.horizontalAccuracy <= 20)) {
             lat = currentLocation.coordinate.latitude;
             lng = currentLocation.coordinate.longitude;
         }
