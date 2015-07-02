@@ -93,7 +93,7 @@ static double lng;
     if (currentLocation != nil) {
         NSDate* eventDate = currentLocation.timestamp;
         NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-        if (abs(howRecent) < 5.0 && (currentLocation.horizontalAccuracy >= 0 && currentLocation.horizontalAccuracy <= 10)) {
+        if (abs(howRecent) < 5.0 && (currentLocation.horizontalAccuracy >= 0 && currentLocation.horizontalAccuracy <= 5)) {
             lat = currentLocation.coordinate.latitude;
             lng = currentLocation.coordinate.longitude;
         }
